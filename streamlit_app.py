@@ -1,8 +1,8 @@
 import streamlit as st
 from transformers import pipeline
 
-# 모델 로딩 (Hugging Face의 자연어 처리 모델 사용)
-nlp = pipeline("conversational", model="microsoft/DialoGPT-medium")
+# 모델 로딩 (Hugging Face의 text-generation 모델 사용)
+nlp = pipeline("text-generation", model="microsoft/DialoGPT-medium")
 
 # Streamlit 제목과 설명 추가
 st.title("알람 조치 챗봇")
@@ -15,7 +15,7 @@ user_input = st.text_input("알람 메시지를 입력해주세요", "Link Failu
 if user_input:
     # 알람 유형에 따른 기본 조치 로직
     if "Link Failure: Not in operation" in user_input:
-        st.write("Rilink가 비활성화되었습니다.. 광레벨을 측정하고 불안정한 구간을 점검하세요.")
+        st.write("Rilink가 비활성화되었습니다. 광레벨을 측정하고 불안정한 구간을 점검하세요.")
     elif "Link Failure: No signal detected" in user_input:
         st.write("eCPRI 연결 상태를 확인하고 광레벨을 점검하세요. 연결이 되어 있지 않은 구간을 교체해야 합니다.")
     elif "No connection" in user_input:
@@ -26,5 +26,5 @@ if user_input:
         st.write("Ethernet 프레임 에러가 발생했습니다. L2, L3 레이어를 확인하고 프레임 에러가 있는지 점검하세요.")
     else:
         # 챗봇 모델을 사용한 답변 생성
-        conversation = nlp(f"알람 메시지: {user_input}")
+        conversation = nlp(f"알람 메시지: {user_input}", max_length=100, num_return_sequences=1)
         st.write(f"추천 조치: {conversation[0]['generated_text']}")
