@@ -39,9 +39,17 @@ if user_input:
             else:
                 description = '설명 없음'
                 action = details  # 기존 값이 조치 방법으로 처리됨
-            st.write(f"**알람 명**: {alarm}")
-            st.write(f"**설명**: {description}")
-            st.write(f"**조치 방법**: {action}")
+            
+            # 알람을 박스 형태로 묶어서 표시
+            st.markdown(
+                f"""
+                <div style="border: 2px solid #4CAF50; padding: 15px; margin-bottom: 10px; border-radius: 10px; background-color: #f9f9f9;">
+                    <strong>알람 명</strong>: {alarm}<br>
+                    <strong>설명</strong>: {description}<br>
+                    <strong>조치 방법</strong>: {action}
+                </div>
+                """, unsafe_allow_html=True
+            )
             found = True
     
     if not found:
@@ -112,6 +120,12 @@ for alarm, details in alarms.items():
         action = details  # 기존 값이 조치 방법으로 처리됨
 
     # 알람을 박스 형태로 묶어줌
-    with st.expander(f"알람 명: {alarm}", expanded=False):
-        st.write(f"**설명**: {description}")
-        st.write(f"**조치 방법**: {action}")
+    st.markdown(
+        f"""
+        <div style="border: 2px solid #4CAF50; padding: 15px; margin-bottom: 10px; border-radius: 10px; background-color: #f9f9f9;">
+            <strong>알람 명</strong>: {alarm}<br>
+            <strong>설명</strong>: {description}<br>
+            <strong>조치 방법</strong>: {action}
+        </div>
+        """, unsafe_allow_html=True
+    )
