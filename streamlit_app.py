@@ -32,8 +32,13 @@ if user_input:
     found = False  # 해당하는 알람이 있는지 확인하기 위한 변수
     for alarm, details in alarms.items():
         if user_input.lower() in alarm.lower():  # 입력된 문구가 알람 메시지에 포함되어 있으면
-            description = details.get('description', '설명 없음')  # 설명이 없으면 기본값 설정
-            action = details.get('action', '조치 방법 없음')  # 조치 방법이 없으면 기본값 설정
+            # details가 딕셔너리인지 확인하고, 아니라면 문자열로 처리
+            if isinstance(details, dict):
+                description = details.get('description', '설명 없음')
+                action = details.get('action', '조치 방법 없음')
+            else:
+                description = '설명 없음'
+                action = details  # 기존 값이 조치 방법으로 처리됨
             st.write(f"**알람 명**: {alarm}")
             st.write(f"**설명**: {description}")
             st.write(f"**조치 방법**: {action}")
@@ -73,8 +78,12 @@ modify_password = st.text_input("비밀번호를 입력하세요", type="passwor
 
 if modify_alarm_name in alarms and modify_password == "1109443":
     # 수정할 알람 설명과 조치 방법 입력
-    modify_alarm_description = st.text_input("수정된 알람 설명", alarms[modify_alarm_name].get('description', ''))
-    modify_alarm_action = st.text_input("수정된 알람 조치 방법", alarms[modify_alarm_name].get('action', ''))
+    if isinstance(alarms[modify_alarm_name], dict):
+        modify_alarm_description = st.text_input("수정된 알람 설명", alarms[modify_alarm_name].get('description', ''))
+        modify_alarm_action = st.text_input("수정된 알람 조치 방법", alarms[modify_alarm_name].get('action', ''))
+    else:
+        modify_alarm_description = st.text_input("수정된 알람 설명", "")
+        modify_alarm_action = st.text_input("수정된 알람 조치 방법", alarms[modify_alarm_name])
 
     if st.button("알람 수정"):
         # 알람 수정하고 저장
@@ -94,8 +103,13 @@ st.write("### 현재 알람 리스트")
 
 # 현재 알람 목록을 출력
 for alarm, details in alarms.items():
-    description = details.get('description', '설명 없음')
-    action = details.get('action', '조치 방법 없음')
+    # details가 딕셔너리인지 확인하고, 아니라면 문자열로 처리
+    if isinstance(details, dict):
+        description = details.get('description', '설명 없음')
+        action = details.get('action', '조치 방법 없음')
+    else:
+        description = '설명 없음'
+        action = details  # 기존 값이 조치 방법으로 처리됨
     st.write(f"**알람 명**: {alarm}")
     st.write(f"**설명**: {description}")
     st.write(f"**조치 방법**: {action}")
