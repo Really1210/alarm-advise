@@ -15,7 +15,7 @@ user_input = st.text_input("알람 메시지를 입력해주세요", "Link Failu
 if user_input:
     # 알람 유형에 따른 기본 조치 로직
     if "Link Failure: Not in operation" in user_input:
-        st.write("Rilink가 비활성화되었습니다. 광레벨을 측정하고 불안정한 구간을 점검하세요.")
+        st.write("Rilink가 비활성화되었습니다.. 광레벨을 측정하고 불안정한 구간을 점검하세요.")
     elif "Link Failure: No signal detected" in user_input:
         st.write("eCPRI 연결 상태를 확인하고 광레벨을 점검하세요. 연결이 되어 있지 않은 구간을 교체해야 합니다.")
     elif "No connection" in user_input:
