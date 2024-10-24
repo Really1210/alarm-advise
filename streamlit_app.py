@@ -1,13 +1,24 @@
 import streamlit as st
+import json
+import os
 
-# 초기 알람과 조치 방법을 담은 딕셔너리
-alarms = {
-    "Link Failure: Not in operation": "Rilink가 비활성화되었습니다. 광레벨을 측정하고 불안정한 구간을 점검하세요.",
-    "Link Failure: No signal detected": "해당 Port에 SFP 가 연결이 이뤄지지 않았습니다. eCPRI 연결 상태를 확인하고 광레벨을 점검하세요. 연결이 되어 있지 않은 구간을 교체해야 합니다.",
-    "No connection": "DUH와 AAU 사이의 SFP 및 케이블 상태를 점검하세요. 문제가 있는 링크를 교체하세요.",
-    "SW Error": "SW 모듈을 재시작하거나 보드 교체를 고려하세요.",
-    "Ethernet frame error": "Ethernet 프레임 에러가 발생했습니다. L2, L3 레이어를 확인하고 프레임 에러가 있는지 점검하세요."
-}
+# 파일 경로 설정 (알람 정보를 저장할 JSON 파일 경로)
+ALARM_FILE = 'alarms.json'
+
+# 알람 데이터를 JSON 파일에서 읽어오기
+def load_alarms():
+    if os.path.exists(ALARM_FILE):
+        with open(ALARM_FILE, 'r') as file:
+            return json.load(file)
+    return {}
+
+# 알람 데이터를 JSON 파일에 저장하기
+def save_alarms(alarms):
+    with open(ALARM_FILE, 'w') as file:
+        json.dump(alarms, file)
+
+# 초기 알람 불러오기
+alarms = load_alarms()
 
 # Streamlit 제목과 설명 추가
 st.title("알람 조치 챗봇")
@@ -36,10 +47,11 @@ new_alarm_name = st.text_input("새로운 알람 명", "")
 new_alarm_description = st.text_input("새로운 알람 설명", "")
 new_alarm_action = st.text_input("새로운 알람 조치 방법", "")
 
-# 추가 버튼을 누르면 딕셔너리에 새로운 알람을 추가
+# 추가 버튼을 누르면 딕셔너리에 새로운 알람을 추가하고 JSON 파일에 저장
 if st.button("알람 추가"):
     if new_alarm_name and new_alarm_action:  # 알람 이름과 조치 방법이 모두 입력된 경우
         alarms[new_alarm_name] = new_alarm_action
+        save_alarms(alarms)  # 새로운 알람을 JSON 파일에 저장
         st.success(f"새로운 알람 '{new_alarm_name}'가 성공적으로 추가되었습니다.")
     else:
         st.error("알람 이름과 조치 방법을 모두 입력해주세요.")
