@@ -3,7 +3,7 @@ import streamlit as st
 # 초기 알람과 조치 방법을 담은 딕셔너리
 alarms = {
     "Link Failure: Not in operation": "Rilink가 비활성화되었습니다. 광레벨을 측정하고 불안정한 구간을 점검하세요.",
-    "Link Failure: No signal detected": "eCPRI 연결 상태를 확인하고 광레벨을 점검하세요. 연결이 되어 있지 않은 구간을 교체해야 합니다.",
+    "Link Failure: No signal detected": "해당 Port에 SFP 가 연결이 이뤄지지 않았습니다. eCPRI 연결 상태를 확인하고 광레벨을 점검하세요. 연결이 되어 있지 않은 구간을 교체해야 합니다.",
     "No connection": "DUH와 AAU 사이의 SFP 및 케이블 상태를 점검하세요. 문제가 있는 링크를 교체하세요.",
     "SW Error": "SW 모듈을 재시작하거나 보드 교체를 고려하세요.",
     "Ethernet frame error": "Ethernet 프레임 에러가 발생했습니다. L2, L3 레이어를 확인하고 프레임 에러가 있는지 점검하세요."
