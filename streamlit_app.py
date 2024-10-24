@@ -30,9 +30,11 @@ user_input = st.text_input("알람 메시지를 입력하거나 특정 단어를
 # 사용자 입력 처리
 if user_input:
     found = False  # 해당하는 알람이 있는지 확인하기 위한 변수
-    for alarm, action in alarms.items():
+    for alarm, details in alarms.items():
         if user_input.lower() in alarm.lower():  # 입력된 문구가 알람 메시지에 포함되어 있으면
-            st.write(f"**{alarm}**: {action}")
+            st.write(f"**알람 명**: {alarm}")
+            st.write(f"**설명**: {details['description']}")
+            st.write(f"**조치 방법**: {details['action']}")
             found = True
     
     if not found:
@@ -49,17 +51,47 @@ new_alarm_action = st.text_input("새로운 알람 조치 방법", "")
 
 # 추가 버튼을 누르면 딕셔너리에 새로운 알람을 추가하고 JSON 파일에 저장
 if st.button("알람 추가"):
-    if new_alarm_name and new_alarm_action:  # 알람 이름과 조치 방법이 모두 입력된 경우
-        alarms[new_alarm_name] = new_alarm_action
+    if new_alarm_name and new_alarm_description and new_alarm_action:  # 알람 이름, 설명, 조치 방법이 모두 입력된 경우
+        alarms[new_alarm_name] = {
+            'description': new_alarm_description,
+            'action': new_alarm_action
+        }
         save_alarms(alarms)  # 새로운 알람을 JSON 파일에 저장
         st.success(f"새로운 알람 '{new_alarm_name}'가 성공적으로 추가되었습니다.")
     else:
-        st.error("알람 이름과 조치 방법을 모두 입력해주세요.")
+        st.error("알람 이름, 설명, 조치 방법을 모두 입력해주세요.")
+
+# 알람 수정 섹션
+st.write("---")
+st.write("### 알람 수정")
+
+# 수정할 알람 이름 입력
+modify_alarm_name = st.text_input("수정할 알람 명", "")
+modify_password = st.text_input("비밀번호를 입력하세요", type="password")
+
+if modify_alarm_name in alarms and modify_password == "1109443":
+    # 수정할 알람 설명과 조치 방법 입력
+    modify_alarm_description = st.text_input("수정된 알람 설명", alarms[modify_alarm_name]['description'])
+    modify_alarm_action = st.text_input("수정된 알람 조치 방법", alarms[modify_alarm_name]['action'])
+
+    if st.button("알람 수정"):
+        # 알람 수정하고 저장
+        alarms[modify_alarm_name] = {
+            'description': modify_alarm_description,
+            'action': modify_alarm_action
+        }
+        save_alarms(alarms)
+        st.success(f"알람 '{modify_alarm_name}'가 성공적으로 수정되었습니다.")
+else:
+    if modify_alarm_name and modify_password != "1109443":
+        st.error("잘못된 비밀번호입니다.")
 
 # 업데이트된 알람 리스트 출력
 st.write("---")
 st.write("### 현재 알람 리스트")
 
 # 현재 알람 목록을 출력
-for alarm, action in alarms.items():
-    st.write(f"**{alarm}**: {action}")
+for alarm, details in alarms.items():
+    st.write(f"**알람 명**: {alarm}")
+    st.write(f"**설명**: {details['description']}")
+    st.write(f"**조치 방법**: {details['action']}")
