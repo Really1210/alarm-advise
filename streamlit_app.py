@@ -1,8 +1,4 @@
 import streamlit as st
-from transformers import pipeline
-
-# 모델 로딩 (Hugging Face의 text-generation 모델 사용)
-nlp = pipeline("text-generation", model="microsoft/DialoGPT-medium")
 
 # Streamlit 제목과 설명 추가
 st.title("알람 조치 챗봇")
@@ -25,6 +21,4 @@ if user_input:
     elif "Ethernet frame error" in user_input:
         st.write("Ethernet 프레임 에러가 발생했습니다. L2, L3 레이어를 확인하고 프레임 에러가 있는지 점검하세요.")
     else:
-        # 챗봇 모델을 사용한 답변 생성
-        conversation = nlp(f"알람 메시지: {user_input}", max_length=100, num_return_sequences=1)
-        st.write(f"추천 조치: {conversation[0]['generated_text']}")
+        st.write("해당 알람에 대한 정보를 찾을 수 없습니다. 시스템 로그를 확인하세요.")
