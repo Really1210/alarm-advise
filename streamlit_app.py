@@ -101,7 +101,7 @@ else:
 st.write("---")
 st.write("### 현재 알람 리스트")
 
-# 현재 알람 목록을 출력
+# 현재 알람 목록을 박스 형태로 출력
 for alarm, details in alarms.items():
     # details가 딕셔너리인지 확인하고, 아니라면 문자열로 처리
     if isinstance(details, dict):
@@ -110,6 +110,8 @@ for alarm, details in alarms.items():
     else:
         description = '설명 없음'
         action = details  # 기존 값이 조치 방법으로 처리됨
-    st.write(f"**알람 명**: {alarm}")
-    st.write(f"**설명**: {description}")
-    st.write(f"**조치 방법**: {action}")
+
+    # 알람을 박스 형태로 묶어줌
+    with st.expander(f"알람 명: {alarm}", expanded=False):
+        st.write(f"**설명**: {description}")
+        st.write(f"**조치 방법**: {action}")
