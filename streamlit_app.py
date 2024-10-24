@@ -80,8 +80,10 @@ if st.button("알람 추가"):
 st.write("---")
 st.write("### 알람 수정")
 
-# 수정할 알람 이름 입력
-modify_alarm_name = st.text_input("수정할 알람 명", "")
+# 드롭다운(드롭박스)으로 수정할 알람 선택
+modify_alarm_name = st.selectbox("수정할 알람을 선택하세요", options=list(alarms.keys()))
+
+# 비밀번호 입력
 modify_password = st.text_input("비밀번호를 입력하세요", type="password")
 
 if modify_alarm_name in alarms and modify_password == "1109443":
